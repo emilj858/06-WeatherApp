@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="" ng-app="app">
+
+<head>
+    <title>Weather App</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+    <link rel="stylesheet" href="bower_components/angular-toastr/dist/angular-toastr.css">
+    <link rel="stylesheet" href="index.css">
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+			<script src="https://oss.maxcdn.com/libs/html5shiv/3.7.2/html5shiv.min.js"></script>
+			<script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+		<![endif]-->
+</head>
+
+<body>
+    <div class="container" ng-controller="WeatherController as weather">
+        <div class="well">
+            <h1>Origin Weather Application</h1>
+            <p class="lead">Always know if you'll need an umbrella!</p>
+        </div>
+        <div class="btn-group m-b-18" role="group" aria-label="...">
+            <button type="button" class="btn btn-primary" ng-click="weather.callWeatherController('San Diego')">San Diego</button>
+            <button type="button" class="btn btn-primary" ng-click="weather.callWeatherController('New York')">New York</button>
+            <button type="button" class="btn btn-primary" ng-click="weather.callWeatherController('Washington D.C.')">Washington D.C.</button>
+            <button type="button" class="btn btn-primary" ng-click="weather.callWeatherController('London')">London</button>
+            <button type="button" class="btn btn-primary" ng-click="weather.callWeatherController('Tokyo')">Tokyo</button>
+        </div>
+        <form ng-submit="weather.callWeatherController(weather.input)">
+        <div class="input-group m-b-18">
+            <input type="text" class="form-control" placeholder="City" ng-model="weather.input"></input>
+            <span class="input-group-btn">
+        		<button class="btn btn-default" type="button" ng-click="weather.callWeatherController(weather.input)">Go!</button>
+			</span>
+        </div>
+        </form>
+        <div ng-hide="weather.hidden">
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="panel panel-info">
+                    <div class="panel-heading">City Information</div>
+                    <div class="panel-body">
+                        <table class="table">
+                            <tr>
+                                <td style="text-align: center; border-top: none; font-size: 30px;">
+                                    <image ng-src=http://openweathermap.org/img/w/{{weather.weatherinfo.weather[0].icon}}.png>
+                                        <b>{{weather.weatherinfo.name}}</b></td>
+                            </tr>
+                            <tr>
+                                <td style="text-align: center; border-top: none;"> Long/Lat{{weather.weatherinfo.coord.lon}}, {{weather.weatherinfo.coord.lat}}
+                                </td>
+                            </tr>
+                        </table>
+                        <table class="table">
+
+                            <head>
+                                <tr>
+                                    <th style="border-top: none; text-align: center;">Temperature (F)</th>
+                                    <th style="border-top: none; text-align: center;">Pressure</th>
+                                    <th style="border-top: none; text-align: center;">Humidity</th>
+                                </tr>
+                            </head>
+
+                            <body>
+                                <tr>
+                                    <td style="border-top: none; text-align: center;"><b><font color="green">{{weather.weatherinfo.main.temp}}</b></font></td>
+                                    <td style="border-top: none; text-align: center;"><b><font color="green">{{weather.weatherinfo.main.pressure}}</b></font></td>
+                                    <td style="border-top: none; text-align: center;"><b><font color="green">{{weather.weatherinfo.main.humidity}}%</b></font></td>
+                                </tr>
+                            </body>
+                            <tr>
+                                <th style="border-top: none; text-align: center;">Lowest Temp (F)</th>
+                                <th style="border-top: none; text-align: center;">Highest Temp (F)</th>
+                                <th style="border-top: none; text-align: center;">Wind Speed</th>
+                            </tr>
+
+                            <body>
+                                <td style="border-top: none; text-align: center;"><b><font color="green">{{weather.weatherinfo.main.temp_min}}F</b></font>
+                                </td>
+                                <td style="border-top: none; text-align: center;"><b><font color="green">{{weather.weatherinfo.main.temp_max}}F</font></b></td>
+                                <td style="border-top: none; text-align: center;"><b><font color="green">{{weather.weatherinfo.wind.speed}}mph</font></b></td>
+                            </body>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="panel panel-info">
+                    <div class="panel-heading">Search History</div>
+                    <div class="panel-body">
+                        <table class="table table-striped">
+                            <tr ng-repeat="searchResult in weather.results">
+                                <td>{{searchResult.name}}</td>
+                                <td style="text-align: right;">{{searchResult.date}}<br>{{searchResult.time}}</td>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        </div>
+    </div>
+    <!-- jQuery -->
+    <script src="//code.jquery.com/jquery.js"></script>
+    <!-- Bootstrap JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+    <script src="bower_components/angular/angular.js"></script>
+    <script src="bower_components/angular-toastr/dist/angular-toastr.tpls.js"></script>
+    <script src="bower_components/angular-animate/angular-animate.js"></script>
+    <script src="app/app.module.js"></script>
+    <script src="app/home/weather.controller.js"></script>
+</body>
+
+</html>
